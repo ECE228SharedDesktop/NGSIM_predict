@@ -121,7 +121,7 @@ def train_on_data(x_all_batches, y_all_batches, num_iterations, n_layers, size, 
             losses_train.append(loss.item())
             progress_bar.set_description(f"loss: {loss.item()} loss(avg ): {np.mean(losses_train)}")
 
-        return (model, losses_train)
+    return (model, losses_train)
 
     # plt.figure()
     # plt.plot(np.log10(np.array(losses_train)))
