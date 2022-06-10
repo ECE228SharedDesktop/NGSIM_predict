@@ -87,13 +87,10 @@ def train_on_data(x_all_batches, y_all_batches, num_iterations, n_layers, size, 
         np.random.shuffle(input_data)
         np.random.shuffle(target_data)
 
-        input_data = np2torch(input_data)
-        target_data = np2torch(target_data)
+        input_size = input_data.shape[-1]
+        output_size = target_data.shape[-1]
 
-        input_size = input_data.size()[-1]
-        output_size = target_data.size()[-1]
-
-        num_batches = int(input_data.size()[0] / batch_size)
+        num_batches = int(input_data.shape[0] / batch_size)
 
         model = build_mlp(input_size, output_size, n_layers, size, batch_size)  # model
         print(model)
@@ -110,8 +107,8 @@ def train_on_data(x_all_batches, y_all_batches, num_iterations, n_layers, size, 
             model.eval()
             # print("Shape of model.forward(input_data.to(device)):"+str((model.forward(input_data.to(device))).size()))
             # print("Shape of target data: "+str(target_data.size()))
-            outputs = torch.reshape(torch.mean(model.forward(input_data_batch.to(device)),dim=1),target_data_batch.size())
-            loss = (criterion(outputs, target_data_batch)).mean()
+            outputs = torch.reshape(torch.mean(model.forward(np2torch(input_data_batch).to(device)),dim=1),target_data_batch.shape)
+            loss = (criterion(outputs, np2torch(target_data_batch))).mean()
 
             # Backward pass
             optimizer.zero_grad()
