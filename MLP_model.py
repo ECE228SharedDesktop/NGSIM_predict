@@ -75,8 +75,6 @@ def train_on_data(x, y, num_iterations, n_layers, size, num_channels, device):
 
     input_data = np.random.random((input_size))
     target_data = np.random.random((output_size))
-    print("input_data"+str(input_data))
-    print("output_data:"+str(target_data))
 
     input_data = np2torch(input_data)
     target_data = np2torch(target_data)
