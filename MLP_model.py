@@ -10,10 +10,10 @@ Multi-layer perceptron model. Modified from code Lawson submitted for MLP homewo
 """
 
 def build_mlp(
-          input_size,
-          output_size,
-          n_layers,
-          size):
+          input_size=4,
+          output_size=3,
+          n_layers=2,
+          size=50):
     """
     Args:
         input_size: int, dim(inputs)
@@ -58,7 +58,7 @@ def send_all_to_device(list,device):
         thing.to(device)
 
 
-def train_on_data(x, y, num_iterations, n_layers, size, num_channels, device):
+def train_on_data(x, y, num_iterations, n_layers, size, device):
     """
     :param x: inputs to MLP
     :param y: desired outputs of MLP
@@ -74,11 +74,14 @@ def train_on_data(x, y, num_iterations, n_layers, size, num_channels, device):
     # size = 30
     # num_channels = 1
 
-    input_data = np.random.random((input_size))
-    target_data = np.random.random((output_size))
+    input_data = x
+    target_data = y
 
     input_data = np2torch(input_data)
     target_data = np2torch(target_data)
+
+    input_size = input_data.size()
+    output_size = target_data.size()
 
     model = build_mlp(input_size, output_size, n_layers, size) # model
     criterion = nn.MSELoss(reduction="none") # loss function
