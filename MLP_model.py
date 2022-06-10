@@ -28,10 +28,10 @@ def build_mlp(
             super(NN, self).__init__()
             self.ourNN = nn.Sequential() # Make sequential module container
             self.ourNN.add_module("Hidden_0", nn.Linear(input_size,size,bias=True)) # Layer 1
-            self.ourNN.add_module("LeakyReLU_0", nn.LeakyReLU(inplace=False))
+            self.ourNN.add_module("Sigmoid_0", nn.Sigmoid())
             for n in range(1,n_layers):
                 self.ourNN.add_module("Hidden_"+str(n), nn.Linear(size, size, bias=True))
-                self.ourNN.add_module("LeakyReLU_"+str(n), nn.LeakyReLU(inplace=False))
+                self.ourNN.add_module("Sigmoid_"+str(n), nn.Sigmoid())
             self.ourNN.add_module("Output_layer",nn.Linear(size, output_size, bias=True))# Last layer
             self.ourNN.add_module("Output_Softmax_activation",nn.Softmax())
             self.ourNN.to(device)
@@ -84,7 +84,7 @@ def train_on_data(x, y, num_iterations, n_layers, size, device):
     output_size = target_data.size()
 
     model = build_mlp(input_size, output_size, n_layers, size) # model
-    criterion = nn.MSELoss(reduction="none") # loss function
+    criterion = nn.CrossEntropyLoss(reduction="none") # loss function
     optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9) # optimizer
     model.train() #sets model to train mode (dropout enabled)
     torch.set_grad_enabled(True) # L5kit does this, and I don't know why
