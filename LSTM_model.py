@@ -28,14 +28,14 @@ def build_mlp(
             super(NN, self).__init__()
             self.ourNN = nn.Sequential() # Make sequential module container
             # Layer 1
-            self.ourNN.add_module("Hidden_0", nn.LSTM(input_size,256,n_layers, batch_first=True, bidirectional=False)) 
-            self.ourNN.add_module("LeakyReLU_0", nn.Linear(256, n_classes))
+            self.ourNN.add_module("Hidden_0", nn.LSTM(input_size,256, batch_first=True, bidirectional=False)) 
+            self.ourNN.add_module("Sigmoid_0", nn.Sigmoid())
             # Middle Layers
-            self.ourNN.add_module("Middle", nn.LSTM(256,256,n_layers, batch_first=False, bidirectional=False)) 
-            self.ourNN.add_module("LeakyReLU_"+str(n), nn.Linear(256, n_classes))
+            self.ourNN.add_module("Middle", nn.LSTM(256,256,n_layers-3, batch_first=False, bidirectional=False)) 
+            self.ourNN.add_module("Sigmoid_mid", nn.Sigmoid())
             # Last but not least layer  
             self.ourNN.add_module("Output_layer",nn.LSTM(256, 128, batch_first=False, bidirectional=False)) 
-            self.ourNN.add_module("LeakyReLU_0", nn.LeakyReLU(nn.Linear(128, n_classes))
+            self.ourNN.add_module("Sigmoid_nwg2", nn.Sigmoid())
             # last layer
             self.ourNN.add_module("Output_layer",nn.Linear(128, output_size, bias=True))
             self.ourNN.add_module("Output_Softmax_activation",nn.Softmax())
